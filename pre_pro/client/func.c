@@ -27,5 +27,40 @@ int Connect(SOCKET*socket_send,SOCKADDR_IN *Server_add){
 	(*socket_send)=socket(AF_INET,SOCK_STREAM,0);
     if(connect(*socket_send,(SOCKADDR*)Server_add,sizeof(SOCKADDR))==SOCKET_ERROR){
 	    printf("连接失败！！\n"); return 1;}  
+	printf("连接成功！！\n\n"); 
     return 0;
+}
+
+int check_wait(SOCKET socket){
+	int ret;
+	interval.tv_sec = 0;//秒 
+	interval.tv_usec = TIME;  //微秒 
+	//select 执行完后会清空 interval  
+	
+	FD_ZERO(&readset);//清空 
+	FD_SET(socket, &readset);
+	ret = select(socket+1, &readset, NULL, NULL, &interval); 
+	if(ret > 0)  return 1;  //有数据要接收 
+    if(!ret)  return 2; //超时 
+    return 0;//出错了 
+    
+} 
+
+void Sendmsg(SOCKET *socket,int data){
+    printf("发送数据: %d\n\n",data);
+	sprintf(buffer,"%d",data);
+	send(*socket,buffer,10,0);
+}
+
+int if_on(){
+	float inv=(float)(time(0)-Time_init)*1000;
+	printf("已经用时：%f ms\n",inv);
+	if(inv>=sum_time) return 0;
+	if((sum_time-inv)> Hal_T) return 1;
+	return 0;
+}
+
+char* recdata(SOCKET *socket){
+	recv(*socket,buffer,10,0);
+	return buffer;
 }
