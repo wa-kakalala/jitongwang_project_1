@@ -47,9 +47,10 @@ int check_wait(SOCKET socket){
 } 
 
 void Sendmsg(SOCKET *socket,int data){
+	memset(buffer,0,sizeof(buffer));
     printf("·¢ËÍÊý¾Ý: %d\n\n",data);
 	sprintf(buffer,"%d",data);
-	send(*socket,buffer,10,0);
+	send(*socket,buffer,strlen(buffer),0);
 }
 
 int if_on(){
@@ -61,6 +62,7 @@ int if_on(){
 }
 
 char* recdata(SOCKET *socket){
+	memset(buffer,0,sizeof(buffer));
 	recv(*socket,buffer,10,0);
 	return buffer;
 }

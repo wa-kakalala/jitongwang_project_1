@@ -67,9 +67,9 @@ int talk(SOCKET* socket_receive){
 	if(ReceiveLen<=0){
        return -1;
 	} 
-	printf("接受的数据：%s\n\n",buffer);
-	for(i=ReceiveLen;i>=0;i--){
-		data+=(buffer[i]-48)*base[i]; 
+	printf("接受的数据：%s\n",buffer);
+	for(i=ReceiveLen-1;i>=0;i--){
+		data+=(buffer[i]-48)*base[ReceiveLen-1-i]; 
 	}
 	return data;
 	

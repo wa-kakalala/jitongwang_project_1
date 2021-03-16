@@ -15,11 +15,15 @@ int main() {
 	if(Listen(&socket_server)) exit(0);
 	if(Accept(&socket_server,&socket_receive,&Client_add)) exit(0);
 	while(1){
+		printf("---------------------\n"); 
 	    data=talk(&socket_receive);
 		if(data==-1) break;
 		
 		res=data+(rand()%500+1);
+		printf("计算结果为:%d \n",res); 
+
 		if(res>100)  Sendmsg(&socket_receive,res);	
+		printf("---------------------\n\n");
 	}
 	closesocket(socket_receive);
 	closesocket(socket_server);
